@@ -11,25 +11,25 @@ const clean = ({ category, due_date, ...rest }) => ({
 });
 
 export function listTasks() {
-  return supabase.from("tasks").select(COLUMNS).order("created_at", { ascending: false });
+  return supabase.from("gt_tasks").select(COLUMNS).order("created_at", { ascending: false });
 }
 
 export function createTask({ title, priority, category, due_date }) {
   return supabase
-    .from("tasks")
+    .from("gt_tasks")
     .insert(clean({ title, priority, category, due_date }))
     .select(COLUMNS)
     .single();
 }
 
 export function updateTask(id, changes) {
-  return supabase.from("tasks").update(clean(changes)).eq("id", id).select(COLUMNS).single();
+  return supabase.from("gt_tasks").update(clean(changes)).eq("id", id).select(COLUMNS).single();
 }
 
 export function deleteTask(id) {
-  return supabase.from("tasks").delete().eq("id", id);
+  return supabase.from("gt_tasks").delete().eq("id", id);
 }
 
 export function deleteDoneTasks() {
-  return supabase.from("tasks").delete().eq("is_done", true);
+  return supabase.from("gt_tasks").delete().eq("is_done", true);
 }
