@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { LogOut } from "lucide-react";
+import { signOut } from "./services/auth";
 import useTasks from "./hooks/useTasks";
 import { groupTasks } from "./lib/groupTasks";
 import DayHeader from "./components/DayHeader";
@@ -25,7 +27,7 @@ export default function App() {
       (t) =>
         (status === "all" || t.is_done === (status === "done")) &&
         (!category || t.category === category) &&
-        (!q || `${t.title} ${t.category}`.toLowerCase().includes(q)),
+        (!q || `${t.title} ${t.category ?? ""}`.toLowerCase().includes(q)),
     );
     return groupTasks(visible);
   }, [tasks, search, status, category]);
@@ -42,6 +44,16 @@ export default function App() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 md:px-8 md:py-12">
+      <p className="mb-4 text-right">
+        <button
+          type="button"
+          onClick={signOut}
+          className="inline-flex items-center gap-2 rounded px-3 py-2 text-sm font-bold text-muted hover:text-ink"
+        >
+          <LogOut size={16} aria-hidden="true" />
+          Cerrar sesión
+        </button>
+      </p>
       <DayHeader dueCount={count("today") + count("overdue")} overdueCount={count("overdue")} />
       <div className="grid md:grid-cols-[200px_1fr] md:gap-12">
         <Filters
